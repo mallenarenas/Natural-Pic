@@ -6,10 +6,12 @@ import Context from "../context";
 
 export default function Galeria() {
   const { data, favorites, setFavorites } = useContext(Context)
+  // función que cambia el liked
   const changeLiked = (id) =>{
     const i=data.findIndex((photo) => photo.id === id)
     data[i].liked = !data[i].liked
   }
+  // función que cambia el estado favoritos
   const changeFavorites = (id,photo) =>{
     console.log(!photo.liked)
     if(!photo.liked){
@@ -18,7 +20,8 @@ export default function Galeria() {
     }
     else{
       const i = favorites.findIndex((photo) => photo.id === id)
-      setFavorites(favorites.splice(i))
+      console.log(i)
+      setFavorites(favorites.splice(i,1))
       console.log(favorites)
     }
   }

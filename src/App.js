@@ -11,23 +11,25 @@ import Context from "./context";
 
 export default function App() {
   const endpoint = "/fotos.json";
+  // Variable global para galería
   const [data, setData] = useState([]);
+  // Variablo gobal para la galeria de favoritos
   const [favorites, setFavorites] = useState([]);
   const globalData = { data, setData, favorites, setFavorites };
+  //Leer los datos de fotos.json
   useEffect(() => {
     dataconsult();
-},[])
-  
+  },[])
+  // función para leer y guardar lo datos
 const dataconsult = async () => {  
     const response = await (await fetch(endpoint)).json()
     const data = response.photos
-    console.log(data)
-    const photos = data.map((x) => ({
-      id: x.id,
-      image:  x.src.tiny,
-      liked: x.liked,
+    const photos = data.map((photo) => ({
+      id: photo.id,
+      image:  photo.src.tiny,
+      liked: photo.liked,
     }))
-    console.log(photos)
+    // Se cambia el estado
     setData(photos)
     return
   }
