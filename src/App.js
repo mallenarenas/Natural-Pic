@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import "./styles.css";
 
-function App() {
+import { useEffect, useState } from "react";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+
+import Home from "./views/Home";
+import Favoritos from "./views/Favoritos";
+import Context from "./context";
+
+export default function App() {
+  const endpoint = "/fotos.json";
+  const [data, setData] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const globalData = { data, setData, favorites, setFavorites };
+  useEffect(() => {
+    dataconsult();
+},[])
+  
+const dataconsult = async () => {  
+    const response = await (await fetch(endpoint)).json()
+    const data = response.photos
+    console.log(data)
+    const photos = data.map((x) => ({
+      id: x.id,
+      image:  x.src.tiny,
+      liked: x.liked,
+    }))
+    console.log(photos)
+    setData(photos)
+    return
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Context.Provider value={globalData}>
+      <BrowserRouter>
+        <Navbar />
+         <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/favoritos" element={<Favoritos />} />
+        </Routes>
+      </BrowserRouter>
+      </Context.Provider>
     </div>
   );
 }
-
-export default App;
