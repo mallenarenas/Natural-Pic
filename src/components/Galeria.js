@@ -21,7 +21,7 @@ export default function Galeria() {
     else{
       const i = favorites.findIndex((photo) => photo.id === id)
       console.log(i)
-      setFavorites(favorites.splice(i,1))
+      setFavorites([...favorites.slice(0,i),...favorites.slice(i+1,favorites.length)])
       console.log(favorites)
     }
   }
